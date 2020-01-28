@@ -130,10 +130,19 @@ public:
   //
   mymatrix(const mymatrix<T>& other)
   { 
-    Rows = other.Rows;
-    NumRows = other.NumRows;
+    this->Rows = new ROW[other.NumRows];
+    this->NumRows = other.NumRows;
 
-    for (int r = 0; )
+    for (int r = 0; r < NumRows; ++r)
+    { 
+      int NumCols = other.Rows[r].NumCols;
+      this->Rows[r].Cols = new T[NumCols];
+      this->Rows[r].NumCols = NumCols;
+      for (int c = 0; c < other.NumRows; ++c)
+      {
+        this->Rows[r].Cols[c] = other.Rows[r].Cols[c];        
+      } 
+    }
   }
  
  
@@ -400,7 +409,7 @@ public:
   mymatrix<T> operator*(const mymatrix<T>& other)
   {
     
-    
+    int debug = 0;
     mymatrix<T> result(1,1); // keeping result matrix to minimum.
     mymatrix<T> matrix2(1,1);
 
@@ -449,14 +458,15 @@ public:
             // T a = 0;
             // T b = 0;
             // debugger for matrix multiplication. 
-            cout << "|("<< i << "," << k << ")*" << "("<< k << "," << j << ")" << " = " << a <<"*" << b << "|   ";
+            if(debug!=0) cout << "|("<< i << "," << k << ")*" << "("<< k << "," << j << ")" << " = " << a <<"*" << b << "|   ";
 
             sum = sum + (a * b);
           }
-          cout << endl;
+          if( debug != 0) cout << endl;
           result(i,j) = sum;  
         } 
-        cout <<endl;
+
+        if( debug !=0 ) cout <<endl;
         
       }
       
