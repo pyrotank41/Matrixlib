@@ -202,6 +202,90 @@ void run_tests()
 
 }
 
+void test_30(){
+  mymatrix<int>  M(9, 6);
+
+  int R = 9;
+  int C = 6;
+
+  REQUIRE(M.numrows() == R);
+
+  for (int r = 0; r < R; ++r)
+    REQUIRE(M.numcols(r) == C);
+
+  REQUIRE(M.size() == (R * C));
+
+  //
+  // all elements should be 0:
+  //
+  for (int r = 0; r < R; ++r)
+    for (int c = 0; c < C; ++c)
+      REQUIRE(M(r, c) == 0);
+
+  //
+  // now let's update the values:
+  //
+  for (int r = 0; r < R; ++r)
+    for (int c = 0; c < C; ++c)
+      M(r, c) = (-7 * r * C) + (2*c) - 1;
+
+  //
+  // now confirm the values were stored properly:
+  //
+  for (int r = 0; r < R; ++r)
+    for (int c = 0; c < C; ++c)
+      REQUIRE(M(r, c) == ((-7 * r * C) + (2 * c) - 1));
+
+  //
+  // let's now let's copy the matrix, and make sure it's a copy:
+  //
+  mymatrix<int> M2 = M;
+
+  REQUIRE(M2.numrows() == R);
+
+  for (int r = 0; r < R; ++r)
+    REQUIRE(M2.numcols(r) == C);
+
+  REQUIRE(M2.size() == (R * C));
+
+  for (int r = 0; r < R; ++r)
+    for (int c = 0; c < C; ++c)
+      REQUIRE(M2(r, c) == ((-7 * r * C) + (2 * c) - 1));
+
+  //
+  // M unchanged by copy:
+  //
+  REQUIRE(M.numrows() == R);
+
+  for (int r = 0; r < R; ++r)
+    REQUIRE(M.numcols(r) == C);
+
+  REQUIRE(M.size() == (R * C));
+
+  for (int r = 0; r < R; ++r)
+    for (int c = 0; c < C; ++c)
+      REQUIRE(M(r, c) == ((-7 * r * C) + (2 * c) - 1));
+
+  //
+  // Okay, if it's a deep copy, I should be able to change M2
+  // and not impact M:
+  //
+  for (int r = 0; r < R; ++r)
+    for (int c = 0; c < C; ++c)
+      M2(r, c) = M2(r, c) - 2;
+
+  // M unchanged:
+  for (int r = 0; r < R; ++r)
+    for (int c = 0; c < C; ++c)
+      REQUIRE(M(r, c) == ((-7 * r * C) + (2 * c) - 1));
+
+  // M2 updated:
+  for (int r = 0; r < R; ++r)
+    for (int c = 0; c < C; ++c)
+      REQUIRE(M2(r, c) == ((-7 * r * C) + (2 * c) - 1 - 2));
+}
+
+
 int main() {
   
   run_tests();

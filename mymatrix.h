@@ -176,12 +176,11 @@ public:
 
     for (int r = 0; r < NumRows; ++r)
     { 
-      int NumCols = other.Rows[r].NumCols;
-      this->Rows[r].Cols = new T[NumCols]; // creating new Cols array
-      this->Rows[r].NumCols = NumCols;
+      this->Rows[r].Cols = new T[other.numcols(r)]; // creating new Cols array
+      this->Rows[r].NumCols = other.numcols(r);
 
       //copying over all the elements from other matrix over to prevent shallow copy.
-      for (int c = 0; c < other.NumRows; ++c)
+      for (int c = 0; c < other.numcols(r); ++c)
       {
         this->Rows[r].Cols[c] = other.Rows[r].Cols[c];        
       } 
