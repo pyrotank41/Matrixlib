@@ -50,7 +50,7 @@ bool edit_test() // checking if the the elements of the matrix is editing or not
   
 }
 
-bool growcol_test() // testing the growth function.
+bool growcol_test() // testing the growcallfunction.
 {
   cout << "growcol() test: ";
   try
@@ -75,7 +75,7 @@ bool growcol_test() // testing the growth function.
   
 }
 
-bool grow_test()
+bool grow_test() // testing grow function
 {
   cout << "grow() test: ";
   try
@@ -96,7 +96,7 @@ bool grow_test()
   }
 }
 
-bool scalar_test()
+bool scalar_test() // testing scalar multiplication
 {
   cout << "scalar multiplication test: ";
   try
@@ -121,7 +121,7 @@ bool scalar_test()
   }
 }
 
-void isEqual(mymatrix<int>& M, mymatrix<int>& MA)
+void isEqual(mymatrix<int>& M, mymatrix<int>& MA) // checking if the matrix is equal
 {
   if(M.numrows() != MA.numrows()){
     throw invalid_argument("isEqual:: Rows does not match");
@@ -146,7 +146,7 @@ void isEqual(mymatrix<int>& M, mymatrix<int>& MA)
   
 }
 
-bool matmulti_test()
+bool matmulti_test() //testing matrix multipliction.
 {
   cout << "matrix multiplication test: ";
   try
@@ -164,10 +164,16 @@ bool matmulti_test()
     M2(2, 2) = 1;
     M2(3, 2) = 1;
 
+    M1._output();
+    M2._output();
+
     mymatrix<int> M3 = M1*M2;
     mymatrix<int> MA(4,3);
-    M3._output();// fix me
-    MA._output();//fix me
+
+    MA(0, 0) = 2;
+    MA(1, 1) = 2;
+    MA(2, 2) = 2;
+    MA(3, 2) = 2;
 
     isEqual(M3,MA);
     cout << "Pass" << endl << "\nOutput:";
@@ -200,89 +206,6 @@ void run_tests()
   cout << "Total tests passed: " << passed << endl;
   cout << "Total tests failed: " << count - passed << endl;
 
-}
-
-void test_30(){
-  mymatrix<int>  M(9, 6);
-
-  int R = 9;
-  int C = 6;
-
-  REQUIRE(M.numrows() == R);
-
-  for (int r = 0; r < R; ++r)
-    REQUIRE(M.numcols(r) == C);
-
-  REQUIRE(M.size() == (R * C));
-
-  //
-  // all elements should be 0:
-  //
-  for (int r = 0; r < R; ++r)
-    for (int c = 0; c < C; ++c)
-      REQUIRE(M(r, c) == 0);
-
-  //
-  // now let's update the values:
-  //
-  for (int r = 0; r < R; ++r)
-    for (int c = 0; c < C; ++c)
-      M(r, c) = (-7 * r * C) + (2*c) - 1;
-
-  //
-  // now confirm the values were stored properly:
-  //
-  for (int r = 0; r < R; ++r)
-    for (int c = 0; c < C; ++c)
-      REQUIRE(M(r, c) == ((-7 * r * C) + (2 * c) - 1));
-
-  //
-  // let's now let's copy the matrix, and make sure it's a copy:
-  //
-  mymatrix<int> M2 = M;
-
-  REQUIRE(M2.numrows() == R);
-
-  for (int r = 0; r < R; ++r)
-    REQUIRE(M2.numcols(r) == C);
-
-  REQUIRE(M2.size() == (R * C));
-
-  for (int r = 0; r < R; ++r)
-    for (int c = 0; c < C; ++c)
-      REQUIRE(M2(r, c) == ((-7 * r * C) + (2 * c) - 1));
-
-  //
-  // M unchanged by copy:
-  //
-  REQUIRE(M.numrows() == R);
-
-  for (int r = 0; r < R; ++r)
-    REQUIRE(M.numcols(r) == C);
-
-  REQUIRE(M.size() == (R * C));
-
-  for (int r = 0; r < R; ++r)
-    for (int c = 0; c < C; ++c)
-      REQUIRE(M(r, c) == ((-7 * r * C) + (2 * c) - 1));
-
-  //
-  // Okay, if it's a deep copy, I should be able to change M2
-  // and not impact M:
-  //
-  for (int r = 0; r < R; ++r)
-    for (int c = 0; c < C; ++c)
-      M2(r, c) = M2(r, c) - 2;
-
-  // M unchanged:
-  for (int r = 0; r < R; ++r)
-    for (int c = 0; c < C; ++c)
-      REQUIRE(M(r, c) == ((-7 * r * C) + (2 * c) - 1));
-
-  // M2 updated:
-  for (int r = 0; r < R; ++r)
-    for (int c = 0; c < C; ++c)
-      REQUIRE(M2(r, c) == ((-7 * r * C) + (2 * c) - 1 - 2));
 }
 
 

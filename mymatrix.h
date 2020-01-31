@@ -381,9 +381,7 @@ public:
 
   mymatrix<T> operator*(T scalar)
   {
-    mymatrix<T> result;
-    result.Rows = Rows;
-    result.NumRows = NumRows;
+    mymatrix<T> result = *this;
  
     for(int r = 0; r < NumRows; ++r){
       int numCols = Rows[r].NumCols;
